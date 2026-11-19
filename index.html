@@ -180,7 +180,28 @@
       <span class="name-line">Lewis</span>
       <span class="name-line">Christie</span>
     </h2>
-    <img  class="photo" src="assets/output_grainy_bw3.png" alt="Portrait of Lewis Christie">
+    <!-- Colour-reveal gallery: one .reveal per photo, black-and-white first, colour second -->
+    <div class="photo gallery">
+      <div class="gallery-stage">
+        <div class="reveal is-active">
+          <img src="assets/reveal-1-bw.jpg" alt="Lewis Christie in a rocky desert landscape" decoding="async">
+          <img class="reveal-colour" src="assets/reveal-1-colour.jpg" alt="" decoding="async">
+        </div>
+        <div class="reveal" aria-hidden="true">
+          <img src="assets/reveal-2-bw.jpg" alt="Lewis Christie standing on a mountain ridge" decoding="async">
+          <img class="reveal-colour" src="assets/reveal-2-colour.jpg" alt="" decoding="async">
+        </div>
+        <div class="reveal" aria-hidden="true">
+          <img src="assets/reveal-3-bw.jpg" alt="Lewis Christie at a mountain viewpoint" decoding="async">
+          <img class="reveal-colour" src="assets/reveal-3-colour.jpg" alt="" decoding="async">
+        </div>
+      </div>
+      <div class="gallery-nav">
+        <button type="button" class="gallery-next" aria-label="Next photo">
+          <svg viewBox="0 0 32 16" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 8h27M22 2l7 6-7 6"/></svg>
+        </button>
+      </div>
+    </div>
     
     <p class="para-one">Outside of work, I am currently studying German with the goal of achieving B1 certification.</p>
     <p class="para-two">I also enjoy travelling and following football in my spare time.</p>
@@ -304,6 +325,92 @@
     });
   }, { rootMargin: '-45% 0px -45% 0px', threshold: 0 });
   sections.forEach(s => s && spy.observe(s));
+
+  // Colour reveal: a circle of colour follows the pointer. While the pointer rests,
+  // the circle keeps growing smoothly until the whole photo is in colour.
+  document.querySelectorAll('.reveal').forEach(function (el) {
+    var MAX = 0.45;          // circle radius while moving, as a fraction of the image width
+    var FILL_TIME = 4000;    // ms of resting to go from circle to full colour
+    var RETRACT_TIME = 700;  // ms of moving to shrink from full colour back to the circle
+    var SMOOTH = 120;        // ms; pointer following and colour leaving (higher = softer)
+    var SMOOTH_IN = 350;     // ms; colour arriving — higher = slower, gentler bloom
+
+    var hovered = false, running = false;
+    var target = { x: 0, y: 0 };
+    var cur = { x: 0, y: 0, r: 0 };
+    var dwell = 0;           // 0 = just a circle, 1 = fully filled
+    var lastMove = 0, lastT = 0;
+
+    function fillRadius(x, y) {
+      // Distance to the farthest corner, enlarged so the soft edge clears the photo completely
+      var w = el.offsetWidth, h = el.offsetHeight;
+      var dx = Math.max(x, w - x), dy = Math.max(y, h - y);
+      return Math.sqrt(dx * dx + dy * dy) / 0.55 + 4;
+    }
+
+    function frame(t) {
+      var dt = Math.min(t - lastT, 50); lastT = t;
+      var still = t - lastMove > 90;
+
+      if (hovered) dwell += still ? dt / FILL_TIME : -dt / RETRACT_TIME;
+      else dwell -= dt / RETRACT_TIME;
+      dwell = Math.max(0, Math.min(1, dwell));
+
+      var base = el.offsetWidth * MAX;
+      var e = dwell * (2 - dwell);                // eases out, so growth never pauses
+      var targetR = hovered ? base + (fillRadius(cur.x, cur.y) - base) * e : 0;
+
+      // Frame-rate independent easing toward the targets
+      var k = 1 - Math.exp(-dt / SMOOTH);
+      cur.x += (target.x - cur.x) * k;
+      cur.y += (target.y - cur.y) * k;
+      var kr = targetR > cur.r ? 1 - Math.exp(-dt / SMOOTH_IN) : k;  // slower growing, same shrinking
+      cur.r += (targetR - cur.r) * kr;
+
+      el.style.setProperty('--x', cur.x + 'px');
+      el.style.setProperty('--y', cur.y + 'px');
+      el.style.setProperty('--r', cur.r + 'px');
+
+      if (!hovered && cur.r < 0.5) { running = false; return; }
+      requestAnimationFrame(frame);
+    }
+    function kick() {
+      if (!running) { running = true; lastT = performance.now(); requestAnimationFrame(frame); }
+    }
+
+    function point(e) {
+      var b = el.getBoundingClientRect();
+      target.x = e.clientX - b.left;
+      target.y = e.clientY - b.top;
+    }
+
+    el.addEventListener('pointerenter', function (e) {
+      point(e);
+      if (!running) { cur.x = target.x; cur.y = target.y; }  // start the circle at the pointer
+      hovered = true;
+      lastMove = performance.now();
+      kick();
+    });
+    el.addEventListener('pointermove', function (e) {
+      point(e);
+      lastMove = performance.now();
+      kick();
+    });
+    el.addEventListener('pointerleave', function () { hovered = false; kick(); });
+  });
+
+  // Gallery: the arrow moves to the next photo with a crossfade, looping back to the first.
+  document.querySelectorAll('.gallery').forEach(function (g) {
+    var slides = g.querySelectorAll('.reveal');
+    var i = 0;
+    g.querySelector('.gallery-next').addEventListener('click', function () {
+      slides[i].classList.remove('is-active');
+      slides[i].setAttribute('aria-hidden', 'true');
+      i = (i + 1) % slides.length;
+      slides[i].classList.add('is-active');
+      slides[i].removeAttribute('aria-hidden');
+    });
+  });
 </script>
 
 </body>
