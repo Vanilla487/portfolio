@@ -8,18 +8,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
-    html[data-theme="light"]{
-    --bg: #f6f4ef;
-    --surface: #ffffff;
-    --text: #171614;
-    --text-dim: rgba(23,22,20,0.5);
-    --text-dimmer: rgba(23,22,20,0.32);
-    --rule: rgba(23,22,20,0.10);
-    --pill: #ece9e1;
-    --pill-hover: #e0dcd1;
-    --accent: #171614;
-    --focus: #b5592f;
-  }
+  
 </style>
 </head>
 <body>
@@ -154,14 +143,9 @@
   </section>
 
   <section id="projects">
-    <div class="section-label" data-i18n="projects.label">projects</div>
+    
     <div class="projects-layout">
-      <div class="thumb-grid">
-        <div class="thumb t1">PEGA NOTES</div>
-        <div class="thumb t2">OPERATION: DOOMSDAY</div>
-        <div class="thumb t3">WHAT'S FOR DINNER?</div>
-        <div class="thumb t4">FAIR_KOLLEKTIV</div>
-      </div>
+      
       <div class="project-list">
         <div class="project-item">
           <a href="#" class="project-name" data-i18n="projects.dinner.name">What's For Dinner? <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17L17 7M7 7h10v10"/></svg></a>
@@ -179,6 +163,10 @@
           <a href="#" class="project-name" data-i18n="projects.album.name">Album Suggester <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17L17 7M7 7h10v10"/></svg></a>
           <p class="project-desc" data-i18n="projects.album.desc">A design-forward album suggester built with React.</p>
         </div>
+                <div class="project-item">
+          <a href="#" class="project-name" data-i18n="projects.album.name">Monthly <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17L17 7M7 7h10v10"/></svg></a>
+          <p class="project-desc" data-i18n="projects.album.desc">A react app to import bank statement exports and analyse monthly spending habits.</p>
+        </div>
       </div>
     </div>
   </section>
@@ -193,24 +181,24 @@
       <span class="name-line">Christie</span>
     </h2>
     <img  class="photo" src="assets/output_grainy_bw3.png" alt="Portrait of Lewis Christie">
-
+    
     <p class="para-one">Outside of work, I am currently studying German with the goal of achieving B1 certification.</p>
     <p class="para-two">I also enjoy travelling and following football in my spare time.</p>
-
+      
   </section>
 
   <footer>
-    <nav class="links-row">
+    <nav class="links-row"> 
     <a href="...">CV</a>
     <a href="https://github.com/Vanilla487" target="_blank" rel="noopener">Github</a>
     <a href="...">LinkedIn</a></nav>
-
+   
   </footer>
 
 </main>
 
 <script>
-  document.getElementById('year').textContent = new Date().getFullYear();
+  
 
   // Theme toggle
   const root = document.documentElement;
