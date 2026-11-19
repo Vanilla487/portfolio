@@ -182,17 +182,18 @@
     </h2>
     <!-- Colour-reveal gallery: one .reveal per photo, black-and-white first, colour second -->
     <div class="photo gallery">
+      <div class="photo-loc" aria-live="polite"><span class="photo-place">Wadi Rum</span><span class="photo-coord">29.6° N, 35.4° E</span></div>
       <div class="gallery-stage">
-        <div class="reveal is-active">
-          <img src="assets/reveal-1-bw.jpg" alt="Lewis Christie in a rocky desert landscape" decoding="async">
+        <div class="reveal is-active" data-place="Wadi Rum" data-coord="29.6° N, 35.4° E">
+          <img src="assets/reveal-1-bw.jpg" alt="Lewis Christie in the Wadi Rum desert, Jordan" decoding="async">
           <img class="reveal-colour" src="assets/reveal-1-colour.jpg" alt="" decoding="async">
         </div>
-        <div class="reveal" aria-hidden="true">
-          <img src="assets/reveal-2-bw.jpg" alt="Lewis Christie standing on a mountain ridge" decoding="async">
+        <div class="reveal" aria-hidden="true" data-place="Lugano" data-coord="46.0° N, 8.9° E">
+          <img src="assets/reveal-2-bw.jpg" alt="Lewis Christie standing on a mountain ridge near Lugano" decoding="async">
           <img class="reveal-colour" src="assets/reveal-2-colour.jpg" alt="" decoding="async">
         </div>
-        <div class="reveal" aria-hidden="true">
-          <img src="assets/reveal-3-bw.jpg" alt="Lewis Christie at a mountain viewpoint" decoding="async">
+        <div class="reveal" aria-hidden="true" data-place="Mauritius" data-coord="20.2° S, 57.5° E">
+          <img src="assets/reveal-3-bw.jpg" alt="Lewis Christie at a viewpoint in Mauritius" decoding="async">
           <img class="reveal-colour" src="assets/reveal-3-colour.jpg" alt="" decoding="async">
         </div>
       </div>
@@ -208,8 +209,8 @@
       </div>
     </div>
     
-    <p class="para-one">Outside of work, I am currently studying German with the goal of achieving B1 certification.</p>
-    <p class="para-two">I also enjoy travelling and following football in my spare time.</p>
+    <p class="para-one" data-i18n="about.p1">I was born in Edinburgh and moved to Münster to be with my wife. Outside of work, I am studying German with the goal of achieving B1 certification by summer 2027.</p>
+    <p class="para-two" data-i18n="about.p2">I also enjoy travelling and following football. I'm a Hearts fan and have recently adopted Preußen Münster as my local club. Recent trips have taken me to Mauritius, Lugano and Wadi Rum, with South America up next.</p>
       
   </section>
 
@@ -258,6 +259,8 @@
       'contact.label':'contact',
       'contact.body':'Add your preferred contact copy here — a short line inviting people to reach out, plus real links below.',
       'about.label':'about',
+      'about.p1':"I was born in Edinburgh and moved to Münster to be with my wife. Outside of work, I am studying German with the goal of achieving B1 certification by summer 2027.",
+      'about.p2':"I also enjoy travelling and following football. I'm a Hearts fan and have recently adopted Preußen Münster as my local club. Recent trips have taken me to Mauritius, Lugano and Wadi Rum, with South America up next.",
       'about.body':'Add your about copy here — background, interests outside Pega/UI work, and anything that gives visitors a sense of who you are beyond the job titles.',
       'footer.built':'built with figma → code'
     },
@@ -280,6 +283,8 @@
       'contact.label':'kontakt',
       'contact.body':'Hier eigenen Kontakttext ergänzen — eine kurze Einladung zur Kontaktaufnahme sowie echte Links unten.',
       'about.label':'über mich',
+      'about.p1':'Ich bin in Edinburgh geboren und für meine Frau nach Münster gezogen. Neben der Arbeit lerne ich Deutsch, mit dem Ziel, bis Sommer 2027 das B1-Zertifikat zu erreichen.',
+      'about.p2':'In meiner Freizeit reise ich gern und verfolge Fußball. Ich bin Hearts-Fan und habe vor Kurzem Preußen Münster als meinen Verein vor Ort adoptiert. Zuletzt war ich auf Mauritius, in Lugano und im Wadi Rum – als Nächstes geht es nach Südamerika.',
       'about.body':'Hier eigenen Über-mich-Text ergänzen — Hintergrund, Interessen abseits von Pega/UI und alles, was Besuchern ein Gefühl dafür gibt, wer du bist.',
       'footer.built':'mit figma → code gebaut'
     }
@@ -400,6 +405,8 @@
   // Gallery: the arrow moves to the next photo with a crossfade, looping back to the first.
   document.querySelectorAll('.gallery').forEach(function (g) {
     var slides = g.querySelectorAll('.reveal');
+    var place = g.querySelector('.photo-place');
+    var coord = g.querySelector('.photo-coord');
     var i = 0;
     g.querySelector('.gallery-next').addEventListener('click', function () {
       slides[i].classList.remove('is-active');
@@ -407,6 +414,8 @@
       i = (i + 1) % slides.length;
       slides[i].classList.add('is-active');
       slides[i].removeAttribute('aria-hidden');
+      if (place) place.textContent = slides[i].dataset.place || '';
+      if (coord) coord.textContent = slides[i].dataset.coord || '';
     });
   });
 </script>
