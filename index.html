@@ -200,12 +200,12 @@
     </h2>
     <!-- Colour-reveal gallery: one .reveal per photo, black-and-white first, colour second -->
     <div class="photo gallery">
-      <div class="gallery-stage">
-        <div class="reveal is-active" data-place="Wadi Rum" data-country="Jordan">
+      <div class="gallery-stage" role="button" tabindex="0" aria-label="Next photo">
+        <div class="reveal is-active" data-place="Wadi Rum" data-country="Jordan" data-country-de="Jordanien">
           <img src="assets/reveal-1-bw.jpg" alt="Lewis Christie in the Wadi Rum desert, Jordan" decoding="async">
           <img class="reveal-colour" src="assets/reveal-1-colour.jpg" alt="" decoding="async">
         </div>
-        <div class="reveal" aria-hidden="true" data-place="Lugano" data-country="Switzerland">
+        <div class="reveal" aria-hidden="true" data-place="Lugano" data-country="Switzerland" data-country-de="Schweiz">
           <img src="assets/reveal-2-bw.jpg" alt="Lewis Christie standing on a mountain ridge near Lugano" decoding="async">
           <img class="reveal-colour" src="assets/reveal-2-colour.jpg" alt="" decoding="async">
         </div>
@@ -220,12 +220,7 @@
           <a href="https://github.com/Vanilla487" target="_blank" rel="noopener">Github</a>
           <a href="...">LinkedIn</a>
         </nav>
-        <div class="gallery-controls">
-          <div class="photo-loc" aria-live="polite"><span class="photo-place">Wadi Rum</span><span class="photo-country">Jordan</span></div>
-          <button type="button" class="gallery-next" aria-label="Next photo">
-            <svg viewBox="0 0 32 16" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 8h27M22 2l7 6-7 6"/></svg>
-          </button>
-        </div>
+        <div class="photo-loc" aria-live="polite"><span class="photo-place">Wadi Rum</span><span class="photo-country">Jordan</span></div>
       </div>
     </div>
     
@@ -329,6 +324,7 @@
       }
     });
     localStorage.setItem('lwc-lang', lang);
+    document.dispatchEvent(new Event('langchange'));
   }
   applyLang(currentLang);
   langBtn.addEventListener('click', () => {
@@ -461,25 +457,55 @@
     el.addEventListener('pointerleave', function () { hovered = false; kick(); });
   });
 
-  // Gallery: the arrow moves to the next photo with a crossfade, looping back to the first.
+  // Gallery: photos crossfade on a timer, or straight away when the photo is clicked.
+  // The timer pauses while the pointer is over the photo (so the colour reveal isn't
+  // cut short), while the tab is hidden, and is off for prefers-reduced-motion users.
   document.querySelectorAll('.gallery').forEach(function (g) {
+    var INTERVAL = 6000;
+    var stage = g.querySelector('.gallery-stage');
     var slides = g.querySelectorAll('.reveal');
     var place = g.querySelector('.photo-place');
     var country = g.querySelector('.photo-country');
-    var i = 0;
-    g.querySelector('.gallery-next').addEventListener('click', function () {
+    var autoplay = !window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    var i = 0, timer = null, hovering = false;
+
+    function label() {
+      var d = slides[i].dataset;
+      var de = document.documentElement.lang === 'de';
+      var c = (de && d.countryDe) || d.country || '';
+      place.textContent = d.place || '';
+      country.textContent = c === d.place ? '' : c;  // e.g. Mauritius isn't shown twice
+      stage.setAttribute('aria-label', de ? 'Nächstes Foto' : 'Next photo');
+    }
+    function next() {
       slides[i].classList.remove('is-active');
       slides[i].setAttribute('aria-hidden', 'true');
       i = (i + 1) % slides.length;
       slides[i].classList.add('is-active');
       slides[i].removeAttribute('aria-hidden');
-      if (place) place.textContent = slides[i].dataset.place || '';
-      if (country) {
-        // Skip the country when it would just repeat the place (e.g. Mauritius)
-        var c = slides[i].dataset.country || '';
-        country.textContent = c === slides[i].dataset.place ? '' : c;
+      label();
+    }
+    function stop() { clearTimeout(timer); timer = null; }
+    function start() {
+      stop();
+      if (autoplay && !hovering && !document.hidden) {
+        timer = setTimeout(function () { next(); start(); }, INTERVAL);
       }
+    }
+
+    stage.addEventListener('click', function () { next(); start(); });
+    stage.addEventListener('keydown', function (e) {
+      if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); next(); start(); }
     });
+    stage.addEventListener('pointerenter', function (e) {
+      if (e.pointerType === 'mouse') { hovering = true; stop(); }
+    });
+    stage.addEventListener('pointerleave', function () { hovering = false; start(); });
+    document.addEventListener('visibilitychange', start);
+    document.addEventListener('langchange', label);
+
+    label();
+    start();
   });
 </script>
 
