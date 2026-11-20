@@ -337,15 +337,54 @@
   // Scrollspy for nav
   const navLinks = document.querySelectorAll('#primaryNav a');
   const sections = Array.from(navLinks).map(l => document.querySelector(l.getAttribute('href')));
-  const spy = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-      if(entry.isIntersecting){
-        const id = '#' + entry.target.id;
-        navLinks.forEach(l => l.classList.toggle('active', l.getAttribute('href') === id));
+  function setActive(id){
+    navLinks.forEach(l => l.classList.toggle('active', l.getAttribute('href') === id));
+  }
+
+  // Active section = the last one whose top has scrolled past a "reading line"
+  // ~30% down the viewport. At the very bottom of the page, the last section wins
+  // (short trailing sections can never reach the line).
+  let navLock = false;   // true while a menu click is smooth-scrolling
+  let lockTimer;
+  function updateSpy(){
+    if(navLock) return;
+    const line = window.innerHeight * 0.3;
+    const atBottom = window.innerHeight + window.scrollY >= document.documentElement.scrollHeight - 2;
+    let current = sections[0];
+    if(atBottom){
+      current = sections[sections.length - 1];
+    } else {
+      for(const s of sections){
+        if(s && s.getBoundingClientRect().top <= line) current = s;
       }
-    });
-  }, { rootMargin: '-45% 0px -45% 0px', threshold: 0 });
-  sections.forEach(s => s && spy.observe(s));
+    }
+    if(current) setActive('#' + current.id);
+  }
+
+  let spyTicking = false;
+  window.addEventListener('scroll', () => {
+    if(navLock){
+      // keep the clicked item highlighted until the smooth scroll settles
+      clearTimeout(lockTimer);
+      lockTimer = setTimeout(() => { navLock = false; }, 150);
+      return;
+    }
+    if(spyTicking) return;
+    spyTicking = true;
+    requestAnimationFrame(() => { updateSpy(); spyTicking = false; });
+  }, { passive: true });
+  window.addEventListener('resize', updateSpy);
+
+  // Clicking a menu item highlights it straight away, even if the section
+  // can't scroll all the way to the top (e.g. contact near the page end).
+  navLinks.forEach(l => l.addEventListener('click', () => {
+    setActive(l.getAttribute('href'));
+    navLock = true;
+    clearTimeout(lockTimer);
+    lockTimer = setTimeout(() => { navLock = false; }, 1000); // fallback if no scroll happens
+  }));
+
+  updateSpy();
 
   // Colour reveal: a circle of colour follows the pointer. While the pointer rests,
   // the circle keeps growing smoothly until the whole photo is in colour.
