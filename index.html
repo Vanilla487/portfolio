@@ -209,8 +209,8 @@
           <img src="assets/reveal-2-bw.jpg" alt="Lewis Christie standing on a mountain ridge near Lugano" decoding="async">
           <img class="reveal-colour" src="assets/reveal-2-colour.jpg" alt="" decoding="async">
         </div>
-        <div class="reveal" aria-hidden="true" data-place="Mauritius" data-country="Mauritius">
-          <img src="assets/reveal-3-bw.jpg" alt="Lewis Christie at a viewpoint in Mauritius" decoding="async">
+        <div class="reveal" aria-hidden="true" data-place="Black River Gorges National Park" data-place-de="Black-River-Gorges-Nationalpark" data-country="Mauritius">
+          <img src="assets/reveal-3-bw.jpg" alt="Lewis Christie at a viewpoint in Black River Gorges National Park, Mauritius" decoding="async">
           <img class="reveal-colour" src="assets/reveal-3-colour.jpg" alt="" decoding="async">
         </div>
       </div>
@@ -473,7 +473,7 @@
       var d = slides[i].dataset;
       var de = document.documentElement.lang === 'de';
       var c = (de && d.countryDe) || d.country || '';
-      place.textContent = d.place || '';
+      place.textContent = (de && d.placeDe) || d.place || '';
       country.textContent = c === d.place ? '' : c;  // e.g. Mauritius isn't shown twice
       stage.setAttribute('aria-label', de ? 'Nächstes Foto' : 'Next photo');
     }
