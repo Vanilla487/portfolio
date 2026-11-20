@@ -217,25 +217,66 @@
   }
 
   /* ---------- Certifications ---------- */
-  .cert-grid{
-    display:grid;
-    grid-template-columns:repeat(auto-fill, minmax(240px,1fr));
-    gap:18px;
-  }
-  .cert-card{
-    background:var(--surface);
-    border:1px solid var(--rule);
-    border-radius:16px;
-    padding:22px;
-  }
-  .cert-name{ font-family:'Baloo 2',sans-serif; font-weight:600; font-size:17px; margin-bottom:6px; }
-  .cert-issuer{ font-size:12px; color:var(--text-dimmer); }
-  .cert-note{
+  .cert-label{
     font-size:13px;
     color:var(--text-dimmer);
-    border:1px dashed var(--rule);
-    border-radius:14px;
-    padding:18px;
+    margin-bottom:14px;
+  }
+  .cert-list{
+    list-style:none;
+    margin:0;
+    padding:0 1.6em 0 0; /* room for the dot that sits past the year column */
+    max-width:1040px;
+    font-family:'DM Sans', sans-serif;
+    font-size:clamp(18px, 2.4vw, 30px);
+    line-height:1.2;
+  }
+  .cert-row{
+    display:grid;
+    /* name | stretching rule | fixed-width year column so all years line up */
+    grid-template-columns:auto 1fr 4.4em;
+    align-items:center;
+    gap:0.6em;
+    padding:0.22em 0;
+  }
+  .cert-name{ white-space:nowrap; }
+  .cert-line{
+    height:1px;
+    background:var(--text);
+    opacity:.85;
+  }
+  .cert-year{ white-space:nowrap; }
+  .cert-pending{
+    display:inline-flex;
+    align-items:center;
+    gap:0.5em;
+  }
+
+  /* Pulsing status dot: solid core + an expanding, fading ring */
+  .pulse-dot{
+    position:relative;
+    width:0.55em;
+    height:0.55em;
+    border-radius:50%;
+    background:var(--focus);
+    flex-shrink:0;
+  }
+  .pulse-dot::after{
+    content:'';
+    position:absolute;
+    inset:0;
+    border-radius:50%;
+    background:var(--focus);
+    animation:cert-pulse 1.8s ease-out infinite;
+  }
+  @keyframes cert-pulse{
+    0%  { transform:scale(1);   opacity:.7; }
+    100%{ transform:scale(2.6); opacity:0; }
+  }
+
+  @media (max-width: 560px){
+    .cert-name{ white-space:normal; }
+    .cert-row{ gap:0.5em; }
   }
 
   /* ---------- Projects ---------- */
@@ -491,6 +532,7 @@
   @media (prefers-reduced-motion: reduce){
     html{ scroll-behavior:auto; }
     *{ transition:none !important; }
+    .pulse-dot::after{ animation:none; opacity:0; }
   }
 
   [data-i18n]{ }
