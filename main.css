@@ -369,12 +369,8 @@
   position: relative;
 }
 
-/* Location label, just above the photo's top-left corner; updates with the gallery */
+/* Location label, in the bottom row beside the arrow; updates with the gallery */
 .photo-loc{
-  position: absolute;
-  bottom: 100%;
-  left: 0;
-  padding-bottom: 10px;
   display: flex;
   gap: 8px;
   font-size: 12px;
@@ -382,7 +378,7 @@
   color: var(--text-dim);
 }
 .photo-place{ color: var(--text); font-weight: 500; }
-.photo-coord::before{ content: "·"; margin-right: 8px; }
+.photo-country:not(:empty)::before{ content: "·"; margin-right: 8px; }
 
 /* ---- Colour-reveal gallery (about section) ---- */
 .gallery-stage{
@@ -427,6 +423,11 @@
   justify-content: space-between;
   align-items: center;
   margin-top: 10px;
+}
+.gallery-controls{
+  display: flex;
+  align-items: center;
+  gap: 14px;
 }
 .links-row{
   display: flex;
