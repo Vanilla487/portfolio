@@ -330,6 +330,12 @@
     applyLang(currentLang);
   });
 
+  // Phone header height (nav wraps differently per width and language) → --header-h
+  const sideNav = document.querySelector('.side-nav');
+  new ResizeObserver(() => {
+    root.style.setProperty('--header-h', sideNav.offsetHeight + 'px');
+  }).observe(sideNav);
+
   // Scrollspy for nav
   const navLinks = document.querySelectorAll('#primaryNav a');
   const sections = Array.from(navLinks).map(l => document.querySelector(l.getAttribute('href')));
