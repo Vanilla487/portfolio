@@ -26,7 +26,6 @@
       <a href="#work" data-i18n="nav.work">work</a>
       <a href="#certifications" data-i18n="nav.certifications">certifications</a>
       <a href="#projects" data-i18n="nav.projects">projects</a>
-      <a href="#contact" data-i18n="nav.contact">contact</a>
       <a href="#about" data-i18n="nav.about">about</a>
     </nav>
     <div class="toggles">
@@ -254,7 +253,7 @@
   // Language toggle (en / de)
   const i18n = {
     en: {
-      'nav.intro':'intro','nav.work':'work','nav.certifications':'certifications','nav.projects':'projects','nav.contact':'contact','nav.about':'about',
+      'nav.intro':'intro','nav.work':'work','nav.certifications':'certifications','nav.projects':'projects','nav.about':'about',
       'intro.eyebrow':"Hi, I'm Lewis —",
       'intro.heading':"Hi, I'm a Pega Certified Senior System Architect (CSSA) with a passion for all things UI and UX.",
       'work.label':'work',
@@ -278,7 +277,7 @@
       'footer.built':'built with figma → code'
     },
     de: {
-      'nav.intro':'intro','nav.work':'werdegang','nav.certifications':'zertifikate','nav.projects':'projekte','nav.contact':'kontakt','nav.about':'über mich',
+      'nav.intro':'intro','nav.work':'werdegang','nav.certifications':'zertifikate','nav.projects':'projekte','nav.about':'über mich',
       'intro.eyebrow':'Hallo, ich bin Lewis —',
       'intro.heading':'Ein von Pega zertifizierter Senior System Architect (CSSA) mit Leidenschaft für alles rund um UI und UX.',
       'work.label':'werdegang',
@@ -378,7 +377,7 @@
   window.addEventListener('resize', updateSpy);
 
   // Clicking a menu item highlights it straight away, even if the section
-  // can't scroll all the way to the top (e.g. contact near the page end).
+  // can't scroll all the way to the top (e.g. a short section near the page end).
   navLinks.forEach(l => l.addEventListener('click', () => {
     setActive(l.getAttribute('href'));
     navLock = true;
