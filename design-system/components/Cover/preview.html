@@ -1,0 +1,38 @@
+<!-- @dsCard height=288 -->
+<!doctype html>
+<html><head><meta charset="utf-8">
+<style>
+  body{ margin:0; }
+  .cover{ position:relative; width:960px; height:288px; overflow:hidden; background:var(--bg); color:var(--text); }
+  .cover svg{ position:absolute; left:480px; top:0; width:480px; height:288px; overflow:hidden; }
+  .ink{ fill:var(--text); }
+  .signal{ fill:var(--focus); }
+  .mid{ fill:var(--text-dim); }
+  .tile{ rx:var(--radius-md); ry:var(--radius-md); }
+  .cut{ stroke:var(--bg); stroke-width:2px; fill:none; }
+  .text{ position:absolute; left:40px; bottom:36px; max-width:440px; }
+  .name{ font-family:var(--font-display); font-weight:500; font-size:120px; line-height:.92; letter-spacing:-0.01em; margin:0; }
+  .tag{ font-family:var(--font-body); font-size:14px; color:var(--text-dim); margin:14px 0 0; }
+</style></head><body>
+<div class="cover">
+  <svg viewBox="0 0 480 288" aria-hidden="true">
+    <!--
+      blocks: focus 244×230 (tall slab, the one hue, largest), text 196×182 (ink slab), text-dim 196×60 (relief), focus disc r14 (the pulse dot); corners radius-md 14px, disc radius-round
+      arrangement: one tall orange slab bleeding off top and right, ink slab and grey band stacked beside it, the disc as a satellite on the ground
+      pattern: editorial hairline row — "Where a line connects things it's a 1px rule"; three rules in bg cut across both slabs like certification rows
+      scales: gaps space-14, rule pitch 44 (space-22 × 2), inset space-40, radius-md 14, radius-round
+    -->
+    <rect class="ink tile" x="40" y="-14" width="196" height="182"/>
+    <rect class="mid tile" x="40" y="182" width="196" height="60"/>
+    <rect class="signal tile" x="250" y="-14" width="244" height="230"/>
+    <line class="cut" x1="40" y1="44" x2="480" y2="44"/>
+    <line class="cut" x1="40" y1="88" x2="480" y2="88"/>
+    <line class="cut" x1="40" y1="132" x2="480" y2="132"/>
+    <circle class="signal" cx="264" cy="242" r="14"/>
+  </svg>
+  <div class="text">
+    <p class="name">lwc</p>
+    <p class="tag">Quiet type, warm neutrals and one orange signal.</p>
+  </div>
+</div>
+</body></html>

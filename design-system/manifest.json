@@ -1,0 +1,67 @@
+{
+  "manifestVersion": 3,
+  "name": "lwc",
+  "namespace": "Lwc",
+  "files": [
+    "components/CertificationList/README.md",
+    "components/GroupLabel/README.md",
+    "components/JobEntry/README.md",
+    "components/PhotoCaption/README.md",
+    "components/PillButton/README.md",
+    "components/ProjectItem/README.md",
+    "components/PulseDot/README.md",
+    "components/SideNav/README.md",
+    "components/Wordmark/README.md",
+    "components/bundle.css",
+    "tokens.css"
+  ],
+  "libraries": [],
+  "components": [
+    {
+      "name": "CertificationList",
+      "group": "Content",
+      "summary": "A ruled list of credentials: name, a hairline that stretches to the right, and the year in an aligned column."
+    },
+    {
+      "name": "GroupLabel",
+      "group": "Content",
+      "summary": "A small sentence-case label above a group of items, currently used only above the certification list (\"Pega Certifications\")."
+    },
+    {
+      "name": "JobEntry",
+      "group": "Content",
+      "summary": "One role in the work history: an employer mark in a round disc, then the company, a large lowercase title, dates and place, and one sentence of description."
+    },
+    {
+      "name": "PhotoCaption",
+      "group": "Content",
+      "summary": "The row under the About photo, with external links on the left and the current photo's place · country on the right."
+    },
+    {
+      "name": "PillButton",
+      "group": "Actions",
+      "summary": "A 38px round control for global toggles (language, theme) that holds a short lowercase label or a 16px icon."
+    },
+    {
+      "name": "ProjectItem",
+      "group": "Content",
+      "summary": "A project link with an arrow-out icon and a one-line description underneath."
+    },
+    {
+      "name": "PulseDot",
+      "group": "Status",
+      "summary": "A small focus-coloured disc with a ring that grows and fades on a loop."
+    },
+    {
+      "name": "SideNav",
+      "group": "Navigation",
+      "summary": "A right-aligned, vertically centred stack of lowercase section links that highlights the section being read."
+    },
+    {
+      "name": "Wordmark",
+      "group": "Brand",
+      "summary": "The type-only logo: \"lwc\" in lowercase DM Sans 500 at 22px, which unfolds into \"lewis william christie\" on hover."
+    }
+  ],
+  "assetGroups": []
+}

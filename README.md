@@ -16,6 +16,8 @@ Personal portfolio site for Lewis William Christie, a Pega Certified Senior Syst
 index.html   # page markup, translations and scripts
 main.css     # styles and theme variables
 assets/      # images (portrait, project thumbnails)
+design-system/  # lwc design system: tokens, rules and component notes
+CLAUDE.md    # instructions for Claude when working on this repo
 ```
 
 ## Running locally
